@@ -1,7 +1,7 @@
 #record inside DB table
 #TABLE - EACH RECORD 
 from database import Base #imported DB. creating this model for our db.py file . impr
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, ForeignKey, Integer, String, Boolean
 
 
 class Users(Base):
@@ -16,6 +16,8 @@ class Users(Base):
     is_active = Column(Boolean, default=True)
     role = Column(String)
 
+
+
 class Todos(Base): #inherits base from db.py file
     __tablename__ = 'todos' #CREATE NEW TABLEsql to know what to name table in db later on 
 
@@ -24,4 +26,4 @@ class Todos(Base): #inherits base from db.py file
     description = Column(String)
     priority = Column(Integer) #these will all default as null
     complete = Column(Boolean, default=False)
-    owner = Column(Integer, foreign_key=True)
+    owner_id = Column(Integer, ForeignKey("users.id"))
