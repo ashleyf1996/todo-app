@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from models import Todos
 from database import engine, SessionLocal
 from starlette import status
-
+from models import Users
 router = APIRouter()
 
 #models.Base.metadata.create_all(bind=engine) 
