@@ -7,8 +7,13 @@ from passlib.context import CryptContext
 from database import engine, SessionLocal
 from starlette import status
 from fastapi.security import OAuth2PasswordRequestForm
+from jose import jwt 
 
 router = APIRouter()
+
+SECRET_KEY = '31672T2167UYGEADHBDEH3GDhd83'
+ALGORITHM = 'HS256'
+
 
 bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated ='auto')
 
