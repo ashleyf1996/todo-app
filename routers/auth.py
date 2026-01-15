@@ -10,6 +10,7 @@ from starlette import status
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from jose import jwt , JWTError
 
+
 router = APIRouter(
     prefix='/auth', 
     tags=['auth']
@@ -47,6 +48,7 @@ def get_db():
         db.close() #executing after response is delivered to close 
 
 db_dependency = Annotated[Session, Depends(get_db)] # dependacy injection depends means to do something beofre this code. ie relies on DB being open
+
 
 
 def authenticate_user(username: str, password: str, db):

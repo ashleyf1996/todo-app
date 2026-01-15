@@ -6,6 +6,8 @@ from models import Todos
 from database import engine, SessionLocal
 from starlette import status
 from models import Users
+from .auth import get_current_user
+
 router = APIRouter()
 
 #models.Base.metadata.create_all(bind=engine) 
@@ -19,6 +21,7 @@ def get_db():
         db.close() #executing after response is delivered to close 
 
 db_dependency = Annotated[Session, Depends(get_db)] # dependacy injection depends means to do something beofre this code. ie relies on DB being open
+user_dependency = Annotated[dict, Depends(get_current_user)]
 
 class TodoRequest(BaseModel):
     title: str = Field(min_length=3)
@@ -41,10 +44,14 @@ async def read_todo(db: db_dependency, todo_id: int = Path(gt=0)):
     
 
 @router.post("/todo", status_code=status.HTTP_201_CREATED)
-async def create_todo(db: db_dependency, todo_request: TodoRequest):
-    todo_model = Todos(**todo_request.model_dump())
-    db.add(todo_model) #getting db ready
-    db.commit() #actualy doing it 
+async def create_todo(user: user_dependency, db: db_dependency, todo_request: TodoRequest):
+    
+    if user is None: 
+        raise HTTPException(status_code=401, detail='Authentication Failed')
+    
+    todo_model = Todos(**todo_request.model_dump(), owner_id=user.get('id'))
+    db.add(todo_model) 
+    db.commit() 
 
 
 @router.put("/todo/{todo_id}", status_code=status.HTTP_204_NO_CONTENT)
