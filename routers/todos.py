@@ -34,6 +34,7 @@ class TodoRequest(BaseModel):
 async def read_all(user: user_dependency, db: db_dependency): 
         if user is None: 
          raise HTTPException(status_code=401, detail='Authentication Failed')
+        
         return db.query(Todos).filter(Todos.owner_id == user.get('id')).all()
 
 
@@ -42,7 +43,7 @@ async def read_todo(user: user_dependency, db: db_dependency, todo_id: int = Pat
     if user is None: 
         raise HTTPException(status_code=401, detail='Authentication Failed')
     
-    todo_model = db.query(Todos).filter(Todos.id == todo_id).first() #sql query. first return as soon as you get a match dont need to look through 
+    todo_model = db.query(Todos).filter(Todos.id == todo_id).filter(Todos.owner_id == user.get('id')).first() 
     if todo_model is not None:
         return todo_model
     raise HTTPException(status_code=404, detail='Todo not found')
