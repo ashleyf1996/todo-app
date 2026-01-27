@@ -1,6 +1,6 @@
 #record inside DB table
 #TABLE - EACH RECORD 
-from database import Base #imported DB. creating this model for our db.py file . impr
+from .database import Base #imported DB. creating this model for our db.py file . impr
 from sqlalchemy import Column, ForeignKey, Integer, String, Boolean
 
 

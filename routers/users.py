@@ -2,10 +2,9 @@ from typing import Annotated
 from fastapi import Depends, APIRouter, HTTPException, Path
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
-from models import Todos
-from database import engine, SessionLocal
+from ..database import engine, SessionLocal
 from starlette import status
-from models import Users
+from ..models import Users
 from .auth import get_current_user
 from passlib.context import CryptContext
 
